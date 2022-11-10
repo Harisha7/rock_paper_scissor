@@ -42,32 +42,32 @@ result_validation = [
 
 def evaluate_result():
     if game_state['my_selection'] and game_state['opponent_selection']:
-        l1.config(text = game_state['my_selection'] + "         ")
-        l3.config(text = game_state['opponent_selection'])
+        my_selection_label.config(text = game_state['my_selection'] + "         ")
+        opponet_selection_label.config(text = game_state['opponent_selection'])
         if game_state['my_selection'] == game_state['opponent_selection']:
-            l4.config(text = "Match  Drawn")
+            status_label.config(text = "Match  Drawn")
         else:
             for x in result_validation:
                 if x[0] == game_state['my_selection'] and x[1] == game_state['opponent_selection']:
-                    l4.config(text = game_state[x[2]] + " Won")
+                    status_label.config(text = game_state[x[2]] + " Won")
 
 # Reset The Game
 def reset_game():
-    b1["state"] = "active"
-    b2["state"] = "active"
-    b3["state"] = "active"
-    l1.config(text = "Player              ")
-    l3.config(text = "Opponent")
-    l4.config(text = "")
+    rock_button["state"] = "active"
+    paper_button["state"] = "active"
+    scissor_button["state"] = "active"
+    my_selection_label.config(text = "Player              ")
+    opponet_selection_label.config(text = "Opponent")
+    status_label.config(text = "")
     game_state['my_selection'] = None
     game_state['opponent_selection'] = None
-    l4.config(text = game_state['opponent'] + " connected")
+    status_label.config(text = game_state['opponent'] + " connected")
 
 # Disable the Button
 def button_disable():
-    b1["state"] = "disable"
-    b2["state"] = "disable"
-    b3["state"] = "disable"
+    rock_button["state"] = "disable"
+    paper_button["state"] = "disable"
+    scissor_button["state"] = "disable"
 
 # If player selected rock
 def isrock():
@@ -100,56 +100,56 @@ Label(window,
 frame = Frame(window)
 frame.pack()
 
-l0 = Label(window,
+player_name_label = Label(window,
             text = "",
             font = "normal 20 bold",
             bg = "green",
             width = 15 ,
             borderwidth = 2,
             relief = "solid")
-l0.pack(pady = 20)
+player_name_label.pack(pady = 20)
 
-l1 = Label(frame,
+my_selection_label = Label(frame,
             text = "Player              ",
             font = 10)
 
-l2 = Label(frame,
+versus_label = Label(frame,
             text = "VS             ",
             font = "normal 10 bold")
 
-l3 = Label(frame, text = "Opponent", font = 10)
+opponet_selection_label = Label(frame, text = "Opponent", font = 10)
 
-l1.pack(side = LEFT)
-l2.pack(side = LEFT)
-l3.pack()
+my_selection_label.pack(side = LEFT)
+versus_label.pack(side = LEFT)
+opponet_selection_label.pack()
 
-l4 = Label(window,
+status_label = Label(window,
             text = "",
             font = "normal 20 bold",
             bg = "white",
             width = 15 ,
             borderwidth = 2,
             relief = "solid")
-l4.pack(pady = 20)
+status_label.pack(pady = 20)
 
 frame1 = Frame(window)
 frame1.pack()
 
-b1 = Button(frame1, text = "Rock",
+rock_button = Button(frame1, text = "Rock",
             font = 10, width = 7,
             command = isrock)
 
-b2 = Button(frame1, text = "Paper",
+paper_button = Button(frame1, text = "Paper",
             font = 10, width = 7,
             command = ispaper)
 
-b3 = Button(frame1, text = "Scissor",
+scissor_button = Button(frame1, text = "Scissor",
             font = 10, width = 7,
             command = isscissor)
 
-b1.pack(side = LEFT, padx = 10)
-b2.pack(side = LEFT,padx = 10)
-b3.pack(padx = 10)
+rock_button.pack(side = LEFT, padx = 10)
+paper_button.pack(side = LEFT,padx = 10)
+scissor_button.pack(padx = 10)
 
 Button(window, text = "Reset Game",
         font = 10, fg = "red",
@@ -175,18 +175,18 @@ def message_handler(timestamp, user, message):
 
 # start - before game loop
 def start():
-    l4.config(text = "Not Connected")
+    status_label.config(text = "Not Connected")
     # connect to network
     game_state['me'] = simpledialog.askstring(
             'Input', 'Your user name', parent=window)
     channel = simpledialog.askstring(
             'Input', 'Channel', parent=window)
     connect(channel, game_state['me'], message_handler)
-    l0.config(text = game_state['me'])
+    player_name_label.config(text = game_state['me'])
     # wait for an opponent 
     while game_state['opponent'] == None and game_exit == False:
         tk_sleep(window, 1 / 10)
-    l4.config(text = game_state['opponent'] + " connected")
+    status_label.config(text = game_state['opponent'] + " connected")
 
 # Execute Tkinter
 start()
